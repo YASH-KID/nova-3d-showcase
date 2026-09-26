@@ -25,3 +25,5 @@ rust-starfield/target
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
