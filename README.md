@@ -76,11 +76,12 @@ cp target/wasm32-unknown-unknown/release/rust_starfield.wasm ../public/wasm/star
 
 ## Deploying
 
+The Vercel CLI is already a dev dependency here — just log in once:
+
 ```bash
-npm install -g vercel   # once
-vercel login            # once, opens a browser
-vercel                  # deploy a preview
-vercel --prod           # deploy to production
+npx vercel login        # once, opens a browser
+npx vercel              # deploy a preview
+npx vercel --prod       # deploy to production
 ```
 
 Vercel auto-detects the Vite frontend and the Go function under `api/` with
