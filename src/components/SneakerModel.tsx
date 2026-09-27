@@ -42,15 +42,15 @@ export default function SneakerModel({ scrollProgress, variant }: Props) {
     if (!g) return
 
     const ease = Math.min(delta * 3, 1)
-    tilt.current.x += (state.pointer.y * 0.22 - tilt.current.x) * ease
-    tilt.current.y += (state.pointer.x * 0.4 - tilt.current.y) * ease
+    tilt.current.x += (state.pointer.y * 0.15 - tilt.current.x) * ease
+    tilt.current.y += (state.pointer.x * 0.2 - tilt.current.y) * ease
 
-    // Gentle centered wobble at rest, not a full continuous spin — an elongated
-    // shape rotating all the way around visibly "walks" off-center as it turns.
-    const idleWobble = Math.sin(state.clock.elapsedTime * 0.4) * 0.3
+    // A small, low base angle plus a tight wobble — an elongated shape rotated
+    // far from front-on visibly "walks" off-center even with a centered pivot.
+    const idleWobble = Math.sin(state.clock.elapsedTime * 0.4) * 0.12
     const scrollSpin = scrollProgress.current * Math.PI * 1.5
 
-    g.rotation.y = 0.6 + idleWobble + tilt.current.y + scrollSpin
+    g.rotation.y = 0.2 + idleWobble + tilt.current.y + scrollSpin
     g.rotation.x = 0.08 - tilt.current.x
     g.position.x = 0
     g.position.y = -0.9 + Math.sin(state.clock.elapsedTime * 0.8) * 0.04 - scrollProgress.current * 0.3

@@ -11,6 +11,7 @@ import DesignNotes from './components/DesignNotes'
 import FAQ from './components/FAQ'
 import CTAFooter from './components/CTAFooter'
 import CursorGlow from './components/CursorGlow'
+import ScrollProgress from './components/ScrollProgress'
 import type { Variant } from './components/SneakerModel'
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
   return (
     <>
       <CursorGlow variant={variant} />
+      <ScrollProgress />
       <Navbar />
       <Loader />
       <main>

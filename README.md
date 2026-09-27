@@ -76,7 +76,10 @@ cp target/wasm32-unknown-unknown/release/rust_starfield.wasm ../public/wasm/star
 
 ## Deploying
 
-The Vercel CLI is already a dev dependency here — just log in once:
+`npx vercel` fetches the CLI on demand rather than installing it as a
+project dependency — Vercel's own build server otherwise picks up the CLI's
+bundled Go source files and chokes on them (a real issue hit building this
+project; see git history around "Temporarily disable Go API function").
 
 ```bash
 npx vercel login        # once, opens a browser
