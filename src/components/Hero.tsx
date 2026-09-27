@@ -16,6 +16,9 @@ export default function Hero({ variant }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const headlineRef = useRef<HTMLDivElement>(null)
   const scrollProgress = useRef(0)
+  // Read once: shadows + HDRI reflections + high DPR are the expensive parts
+  // of this scene, and are what actually causes scroll jank on mid-tier phones.
+  const isLowPower = useRef(typeof window !== 'undefined' && window.innerWidth < 768).current
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -49,18 +52,22 @@ export default function Hero({ variant }: Props) {
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-cosmic">
         <Starfield />
         <Canvas
-          shadows
-          dpr={[1, 1.5]}
+          shadows={!isLowPower}
+          dpr={isLowPower ? 1 : [1, 1.5]}
           camera={{ position: [0, 0.55, 4.2], fov: 32 }}
           className="!absolute inset-0"
         >
           <ambientLight intensity={0.7} />
-          <directionalLight position={[3, 4, 2]} intensity={1.5} castShadow />
+          <directionalLight position={[3, 4, 2]} intensity={1.5} castShadow={!isLowPower} />
           <directionalLight position={[-3, 2, -2]} intensity={0.4} color="#a855f7" />
           <Suspense fallback={null}>
             <SneakerModel scrollProgress={scrollProgress} variant={variant} />
-            <Environment preset="city" environmentIntensity={0.6} />
-            <ContactShadows position={[0, -0.95, 0]} opacity={0.5} blur={2.4} far={2.5} />
+            {!isLowPower && (
+              <>
+                <Environment preset="city" environmentIntensity={0.6} />
+                <ContactShadows position={[0, -0.95, 0]} opacity={0.5} blur={2.4} far={2.5} />
+              </>
+            )}
           </Suspense>
         </Canvas>
 

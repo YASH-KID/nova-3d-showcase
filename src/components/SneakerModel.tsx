@@ -53,7 +53,7 @@ export default function SneakerModel({ scrollProgress, variant }: Props) {
     g.rotation.y = 0.2 + idleWobble + tilt.current.y + scrollSpin
     g.rotation.x = 0.08 - tilt.current.x
     g.position.x = 0
-    g.position.y = -0.9 + Math.sin(state.clock.elapsedTime * 0.8) * 0.04 - scrollProgress.current * 0.3
+    g.position.y = -0.2 + Math.sin(state.clock.elapsedTime * 0.8) * 0.04 - scrollProgress.current * 0.3
   })
 
   return (

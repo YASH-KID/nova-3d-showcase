@@ -7,7 +7,8 @@ type StarfieldExports = {
   resize: (width: number, height: number) => void
 }
 
-const STAR_COUNT = 220
+const STAR_COUNT_DESKTOP = 220
+const STAR_COUNT_MOBILE = 70
 
 export default function Starfield() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -18,11 +19,17 @@ export default function Starfield() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    // Fewer stars and a lower canvas resolution on phones — a full-res 2D
+    // canvas redrawing 220 circles a frame alongside the WebGL scene is a
+    // real cost on mid-tier GPUs, not just the 3D model.
+    const isLowPower = window.innerWidth < 768
+    const STAR_COUNT = isLowPower ? STAR_COUNT_MOBILE : STAR_COUNT_DESKTOP
+
     let raf = 0
     let cancelled = false
     let exportsRef: StarfieldExports | null = null
     let ptr = 0
-    let dpr = Math.min(window.devicePixelRatio || 1, 2)
+    let dpr = isLowPower ? 1 : Math.min(window.devicePixelRatio || 1, 2)
 
     const resize = () => {
       const { clientWidth, clientHeight } = canvas
@@ -65,7 +72,7 @@ export default function Starfield() {
     })
 
     const onResize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      dpr = isLowPower ? 1 : Math.min(window.devicePixelRatio || 1, 2)
       resize()
     }
     window.addEventListener('resize', onResize)
